@@ -6,6 +6,7 @@ import App from "next/app";
 import withRedux from "next-redux-wrapper";
 import moment from "moment";
 import Router from "next/router";
+import Head from "next/head";
 
 const reducer = (
   state = {
@@ -66,6 +67,14 @@ class MyApp extends App {
     const { Component, pageProps, store } = this.props;
     return (
       <Provider store={store}>
+        <Head>
+          <title>Reservation</title>
+          <meta
+            name="viewport"
+            content="initial-scale=1.0, width=device-width"
+            key="viewport"
+          />
+        </Head>
         <Component {...pageProps} />
       </Provider>
     );
