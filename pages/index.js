@@ -10,6 +10,7 @@ function Step1(props) {
   const MINIMUM_DATE = moment()
     .add(2, "hours")
     .toDate();
+  const CHECK_OUT_MINUTES_OFFSET = 5;
 
   const onCheckinChange = date => {
     dispatch({ type: "SET_CHECKIN", payload: date });
@@ -33,7 +34,9 @@ function Step1(props) {
       <DatePicker
         title="Check-out"
         onChange={onCheckoutChange}
-        minValue={checkin}
+        minValue={moment(checkin)
+          .add(CHECK_OUT_MINUTES_OFFSET, "minute")
+          .toDate()}
       />
       <Button variant="contained" color="primary" type="submit">
         Next step
