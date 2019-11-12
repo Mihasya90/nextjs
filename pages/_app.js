@@ -14,7 +14,8 @@ const initialState = {
     .add(2, "hours")
     .toDate(),
   place_id: null,
-  API_KEY: "AIzaSyBjJIxaPQbm98kX0At5rx62uphA0kvTT0M"
+  // API_KEY: "AIzaSyBjJIxaPQbm98kX0At5rx62uphA0kvTT0M"
+  API_KEY: "AIzaSyBAtQ9K1KkZpjWIsk5AVlGTBY_brC_E4Q4"
 };
 
 function reducer(state, { type, payload }) {
