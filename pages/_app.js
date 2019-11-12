@@ -1,4 +1,3 @@
-// pages/_app.js
 import React, { useReducer, createContext } from "react";
 import App from "next/app";
 import moment from "moment";
@@ -14,19 +13,18 @@ const initialState = {
   checkout: moment()
     .add(2, "hours")
     .toDate(),
-  address: null,
+  place_id: null,
   API_KEY: "AIzaSyBjJIxaPQbm98kX0At5rx62uphA0kvTT0M"
 };
 
 function reducer(state, { type, payload }) {
-  console.log(type, payload);
   switch (type) {
     case "SET_CHECKIN":
       return { ...state, checkin: payload };
     case "SET_CHECKOUT":
       return { ...state, checkout: payload };
-    case "SET_ADDRESS":
-      return { ...state, address: payload };
+    case "SET_PLACEID":
+      return { ...state, place_id: payload };
     default:
       return state;
   }
@@ -59,7 +57,7 @@ class MyApp extends App {
   }
 
   render() {
-    const { Component, pageProps, store } = this.props;
+    const { Component, pageProps } = this.props;
     return (
       <StoreProvider>
         <Head>

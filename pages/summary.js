@@ -1,21 +1,45 @@
 // import { google } from "googleapis";
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { GoogleApiWrapper, Map, InfoWindow, Marker } from "google-maps-react";
 import Typography from "@material-ui/core/Typography";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
-import StoreContext from "../src/storeContext";
 import withStore from "../src/withStore";
 import { compose } from "redux";
+import { detailsMock } from "../mocks";
 
 const useStyles = makeStyles(theme => ({
   row: { margin: "20px 0" }
 }));
 
 function Summary(props) {
-  const { google } = props;
-  const [{ address, checkin, checkout }, dispatch] = useContext(StoreContext);
+  const { google, state, dispatch } = props;
+  const { place_id, checkin, checkout, API_KEY } = state;
+  const [address, setAddress] = useState();
   const classes = useStyles();
+  const [error, setError] = useState(null);
+
+  const fetchAddress = async place_id => {
+    const url = `https://maps.googleapis.com/maps/api/place/details/json?key=${API_KEY}&place_id=${place_id}`;
+    let details;
+    try {
+      details =
+        place_id === "ChIJBUVa4U7P1EAR_kYBF9IxSXY"
+          ? detailsMock
+          : await fetch(url);
+      details = details.json ? await details.json() : details;
+
+      setAddress(details.result);
+    } catch (error) {
+      setError((error && error.message) || error);
+    }
+  };
+
+  useEffect(() => {
+    setError(null);
+    if (!place_id) return;
+    fetchAddress(place_id);
+  }, [place_id]);
 
   return (
     <div>
@@ -49,6 +73,7 @@ function Summary(props) {
           </InfoWindow>
         </Map>
       )}
+      {error && <Typography color="error">{error}</Typography>}
     </div>
   );
 }
