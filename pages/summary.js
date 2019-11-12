@@ -1,19 +1,20 @@
 // import { google } from "googleapis";
-import React, { useEffect } from "react";
+import React, { useContext } from "react";
 import { GoogleApiWrapper, Map, InfoWindow, Marker } from "google-maps-react";
-import { compose } from "redux";
-import { connect } from "react-redux";
 import Typography from "@material-ui/core/Typography";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
-import Router from "next/router";
+import StoreContext from "../src/storeContext";
+import withStore from "../src/withStore";
+import { compose } from "redux";
 
 const useStyles = makeStyles(theme => ({
   row: { margin: "20px 0" }
 }));
 
 function Summary(props) {
-  const { google, address, checkin, checkout } = props;
+  const { google } = props;
+  const [{ address, checkin, checkout }, dispatch] = useContext(StoreContext);
   const classes = useStyles();
 
   return (
@@ -53,11 +54,6 @@ function Summary(props) {
 }
 
 export default compose(
-  connect(({ API_KEY, address, checkin, checkout }) => ({
-    API_KEY,
-    address,
-    checkin,
-    checkout
-  })),
-  GoogleApiWrapper(({ API_KEY }) => ({ apiKey: API_KEY }))
+  withStore,
+  GoogleApiWrapper(({ state }) => ({ apiKey: state.API_KEY }))
 )(Summary);

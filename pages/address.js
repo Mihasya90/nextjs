@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { placeIdMock, detailsMock } from "../mocks";
-import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Router from "next/router";
 import TextField from "@material-ui/core/TextField";
+import withStore from "../src/withStore";
 
 const useStyles = makeStyles(theme => ({
   wrapper: { display: "flex" },
@@ -14,7 +14,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Address(props) {
-  const { address, dispatch, API_KEY } = props;
+  const { state, dispatch } = props;
+  const { address, API_KEY } = state;
   const [place, setPlace] = useState("Kyiv");
   const classes = useStyles();
 
@@ -61,7 +62,4 @@ function Address(props) {
   );
 }
 
-export default connect(({ address, API_KEY }) => ({
-  address,
-  API_KEY
-}))(Address);
+export default withStore(Address);

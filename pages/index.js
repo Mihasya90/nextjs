@@ -1,12 +1,13 @@
-import React from "react";
 import Button from "@material-ui/core/Button";
 import moment from "moment";
 import DatePicker from "../components/DatePicker";
-import { connect } from "react-redux";
 import Router from "next/router";
+import withStore from "../src/withStore";
 
 function Step1(props) {
-  const { dispatch, checkin } = props;
+  const { state, dispatch } = props;
+  const { checkin } = state;
+
   const MINIMUM_DATE = moment()
     .add(2, "hours")
     .toDate();
@@ -45,4 +46,4 @@ function Step1(props) {
   );
 }
 
-export default connect(({ checkin }) => ({ checkin }))(Step1);
+export default withStore(Step1);
